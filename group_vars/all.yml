@@ -1,21 +1,22 @@
 ---
 # Initial Server Setup
-remote_user: vagrant
+remote_user: ishmael
 
 # MySQL Setup
-mysql_root_password: MYSQL_ROOT_PASSWORD
+mysql_root_password: MikelArteta
+# mysql_root: MikelArteta
 mysql_app_db: bare_server
 mysql_app_user: bare_server_user
-mysql_app_pass: DB_PASSWORD
+mysql_app_pass: MikelArteta
 
 # Web Server Setup
-http_host: "{{ ansible_facts.eth0.ipv4.address }}"
+http_host: "{{ ansible_default_ipv4.address }}"
 remote_www_root: /var/www
 app_root_dir: bare_server
 document_root: "{{ remote_www_root }}/{{ app_root_dir }}/public"
 
 # Laravel Env Variables
-app_name: "Bare Server Auto Deploy"
+app_name: "Server-Auto-Deploy"
 app_env: dev
 app_debug: true
 app_url: "http://{{ http_host }}"

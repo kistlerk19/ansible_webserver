@@ -1,7 +1,7 @@
 ---
-- name: Install MySQL & mysql-python prereq
+- name: Install MariaDB & mysql-python prereq
   apt: name={{ item }} update_cache=yes state=latest
-  loop: [ 'mysql-server', 'python3-pymysql' ]
+  loop: [ 'mariadb-server', 'python3-pymysql' ]
 
 # MariaDB Configuration
 - name: Sets the root password
@@ -9,6 +9,8 @@
     name: root
     password: "{{ mysql_root_password }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
   no_log: true
 
 - name: Removes all anonymous user accounts
@@ -17,6 +19,8 @@
     host_all: yes
     state: absent
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
   no_log: true
 
 - name: Removes the MySQL test database
@@ -24,12 +28,16 @@
     name: test
     state: absent
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
 
 - name: Creates App Database
   mysql_db:
     name: "{{ mysql_app_db }}"
     state: present
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
 
 - name: Create App MySQL user and grants access to App DB
   mysql_user:
@@ -38,4 +46,6 @@
     priv: "{{ mysql_app_db }}.*:ALL"
     state: present
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
   no_log: true

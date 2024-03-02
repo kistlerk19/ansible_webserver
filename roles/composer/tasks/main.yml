@@ -1,6 +1,6 @@
 ---
 - name: Checks if Composer is already installed
-  command: "{{ composer_path }}"
+  shell: command -v composer
   ignore_errors: true
   register: composer_installed
 

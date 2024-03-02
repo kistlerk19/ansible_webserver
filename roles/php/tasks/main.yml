@@ -1,8 +1,37 @@
 ---
-- name: Install Main PHP Packages
-  apt: name={{ item }} update_cache=yes state=latest
-  loop: [ 'php-fpm', 'php-mysql' ]
+- name: Remove Previous PHP Packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - 'php'
+    - 'php-fpm'
+    - 'php-mysql'
+    - 'php-cli'
+  ignore_errors: true  # Ignore errors if PHP packages are not installed
+
+- name: Add PHP repository for PHP 8.2
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: Install PHP 8.2 and Main Packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  loop:
+    - 'php8.2'
+    - 'php8.2-fpm'
+    - 'php8.2-mysql'
+    - 'php8.2-cli'
+    - 'php8.2-xml'
+    - 'php8.2-curl'
+    - 'php8.2-mbstring'
 
 - name: Install PHP Modules / Extensions
-  apt: name={{ item }} update_cache=yes state=latest
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
   loop: "{{ php_packages }}"

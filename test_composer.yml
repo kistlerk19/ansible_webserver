@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    # Other tasks here...
+
+    - name: Install Dependencies with Composer
+      become: false
+      command: composer update --verbose
+      args:
+        chdir: "{{ remote_www_root }}/{{ app_root_dir }}"
+      tags: [ 'composer:update' ]
+
+    # Other tasks here...
